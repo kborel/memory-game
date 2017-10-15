@@ -1,41 +1,68 @@
-import { combineReducers } from 'redux';
-import uuidv4 from 'uuid';
 import randomColor from 'randomcolor';
 
 // Actions
-const NEW   = 'memory-game/cards/NEW';
+const NEW = 'memory-game/cards/NEW';
+const SELECT = 'memory-game/cards/SELECT';
 
 
 // Reducers
-const createNewState = () => {
+export default function cards(state = {}, action) {
   const nextState = {};
-  const colors = randomColor({ 
-    count: 8,
-    format: 'rgb',
-  });
-  const colorPairs = colors.concat(colors).sort(() => 0.5 - Math.random());
-  colorPairs.map(color =>
-    Object.assign(nextState, {
-      [uuidv4()]: {
-        color,
-        isHidden: true,
-      }
-    }));
-  return nextState;
-};
-
-export default combineReducers({
-  byId,
-});
-
-function byId(state = createNewState(), action) {
   switch(action.type) {
     case NEW:
-      return createNewState();
+      const colors = randomColor({ 
+        count: 8,
+      });
+      colors.concat(colors).sort(() => 0.5 - Math.random()).forEach((color, index) => {
+        Object.assign(nextState, {
+          [index]: {
+            color,
+            status: 'hidden',
+          }
+        });
+      });
+      return nextState;
+    case SELECT:
+      const matchingIds = Object.keys(state).filter( id => state[id].status === 'matching');
+      Object.assign(nextState, {
+        ...state,
+        [action.id]: {
+          ...state[action.id],
+          status: 'matching',
+        },
+      });
+
+      if (matchingIds.length !== 2)
+        return nextState;
+
+      if (state[matchingIds[0]].color === state[matchingIds[1]].color) {
+        Object.assign(nextState, {
+          [matchingIds[0]]: {
+            ...state[matchingIds[0]],
+            status: 'matched',
+          },
+          [matchingIds[1]]: {
+            ...state[matchingIds[1]],
+            status: 'matched',
+          },
+        });
+      } else {
+        Object.assign(nextState, {
+          [matchingIds[0]]: {
+            ...state[matchingIds[0]],
+            status: 'hidden',
+          },
+          [matchingIds[1]]: {
+            ...state[matchingIds[1]],
+            status: 'hidden',
+          },
+        })
+      }
+      return nextState;
     default:
       return state;
   }
-};
+}
 
 
 // Action Creators
@@ -43,6 +70,14 @@ export const newGame = () => ({
   type: NEW,
 });
 
+export const selectCard = id => ({
+  type: SELECT,
+  id,
+});
+
 
 // Selectors
-export const getCards = ({byId}) => Object.keys(byId).map(id => Object.assign(byId[id], { id }));
+export const getCards = state => Object.keys(state.cards).map(id => ({
+  ...state.cards[id],
+  id,
+}));

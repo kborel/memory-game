@@ -7,21 +7,48 @@ import Cards from './components/Cards';
 import * as actions from './ducks/cards';
 import { getCards } from './ducks/cards';
 
-const App = ({ cards, onNewGameClick }) =>
-  <Layout>
-    <Header>
-      <h1>Memory Game</h1>
-      <a onClick={onNewGameClick} >New Game</a>
-    </Header>
-    <Cards>
-      {cards.map(({isHidden, id, color}) =>
-        <Card key={id} isHidden={isHidden} color={color} />
-      )}
-    </Cards>
-  </Layout>
+import { Component } from 'react';
+
+class App extends Component {
+  componentWillMount() {
+    this.props.onNewGameClick();
+  }
+
+  render() {
+    const { cards, onNewGameClick, onCardClick } = this.props;
+    return (
+      <Layout>
+        <Header>
+          <h1>Memory Game</h1>
+          <a onClick={onNewGameClick} >New Game</a>
+        </Header>
+        <Cards>
+          {cards.map(({status, id, color}) =>
+            <Card
+              key={id}
+              isHidden={status === 'hidden'}
+              color={color}
+              onCardClick={
+                status !== 'hidden' 
+                ? undefined
+                : () => onCardClick(id)
+              }
+            />
+          )}
+        </Cards>
+      </Layout>
+    );
+  }
+}
 
 const mapStateToProps = state => ({
-  cards: getCards(state.cards)
+  cards: getCards(state)
 });
 
-export default connect(mapStateToProps, {  onNewGameClick: actions.newGame })(App);
+export default connect(
+  mapStateToProps, 
+  {  
+    onNewGameClick: actions.newGame,
+    onCardClick: actions.selectCard,
+  }
+)(App);
