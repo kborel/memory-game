@@ -1,5 +1,3 @@
-import randomColor from 'randomcolor';
-
 // Actions
 const NEW = 'memory-game/cards/NEW';
 const SELECT = 'memory-game/cards/SELECT';
@@ -57,9 +55,7 @@ export default function cards(state = {}, action) {
 // Action Creators
 export const newGame = () => {
   const payload = {};
-  const colors = randomColor({ 
-    count: 8,
-  });
+  const colors = ['red', 'dodgerblue', 'springgreen', 'yellow', 'magenta', 'hotpink', 'orange', 'aqua'];
   colors.concat(colors).sort(() => 0.5 - Math.random()).forEach((color, index) =>
     Object.assign(payload, {
       [index]: {
