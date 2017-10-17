@@ -11,16 +11,16 @@ import { Component } from 'react';
 
 class App extends Component {
   componentWillMount() {
-    this.props.onNewGameClick();
+    this.props.newGame();
   }
 
   render() {
-    const { cards, onNewGameClick, onCardClick } = this.props;
+    const { cards, newGame, onCardClick } = this.props;
     return (
       <Layout>
         <Header>
           <h1>Memory Game</h1>
-          <a onClick={onNewGameClick} >New Game</a>
+          <a onClick={newGame} >New Game</a>
         </Header>
         <Cards>
           {cards.map(({status, id, color}) =>
@@ -48,7 +48,7 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps, 
   {  
-    onNewGameClick: actions.newGame,
+    newGame: actions.newGame,
     onCardClick: actions.selectCard,
   }
 )(App);
