@@ -7,22 +7,11 @@ const SELECT = 'memory-game/cards/SELECT';
 
 // Reducers
 export default function cards(state = {}, action) {
-  const nextState = {};
   switch(action.type) {
     case NEW:
-      const colors = randomColor({ 
-        count: 8,
-      });
-      colors.concat(colors).sort(() => 0.5 - Math.random()).forEach((color, index) => {
-        Object.assign(nextState, {
-          [index]: {
-            color,
-            status: 'hidden',
-          }
-        });
-      });
-      return nextState;
+      return action.payload;
     case SELECT:
+      const nextState = {};
       const matchingIds = Object.keys(state).filter( id => state[id].status === 'matching');
       Object.assign(nextState, {
         ...state,
@@ -66,9 +55,24 @@ export default function cards(state = {}, action) {
 
 
 // Action Creators
-export const newGame = () => ({
-  type: NEW,
-});
+export const newGame = () => {
+  const payload = {};
+  const colors = randomColor({ 
+    count: 8,
+  });
+  colors.concat(colors).sort(() => 0.5 - Math.random()).forEach((color, index) =>
+    Object.assign(payload, {
+      [index]: {
+        color,
+        status: 'hidden',
+      }
+    }
+  ));
+  return {
+    type: NEW,
+    payload,
+  }
+};
 
 export const selectCard = id => ({
   type: SELECT,
