@@ -18,5 +18,6 @@ const Div = styled.div`
   border: 5px solid gray;
   border-radius: 1rem;
   background-color: ${props => props.isHidden ? 'gray' : props.color};
+  ${props => props.isHidden && `cursor: pointer;`}
   transition: background-color 1s;
 `

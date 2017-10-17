@@ -20,7 +20,7 @@ class App extends Component {
       <Layout>
         <Header>
           <h1>Memory Game</h1>
-          <a onClick={newGame} >New Game</a>
+          <a style={{cursor: 'pointer'}}onClick={newGame} >New Game</a>
         </Header>
         <Cards>
           {cards.map(({status, id, color}) =>
