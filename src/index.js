@@ -15,6 +15,10 @@ injectGlobal`
   html, body, #root { 
     height: 100%;
   }
+
+  html {
+    font-size: calc(0.6em + 1vw);
+  }
 `;
 
 ReactDOM.render(

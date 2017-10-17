@@ -15,10 +15,8 @@ export default Card;
 
 
 const Div = styled.div`
-  width: 200px;
-  height: 200px;
-  border: 10px solid gray;
-  border-radius: 15%;
+  border: 5px solid gray;
+  border-radius: 1rem;
   background-color: ${props => props.isHidden ? 'gray' : props.color};
   transition: background-color 1s;
 `
