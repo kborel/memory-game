@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Menu, Button } from 'semantic-ui-react';
 import Card from './components/Card';
 import Layout from './components/Layout';
 import Cards from './components/Cards';
@@ -17,6 +18,12 @@ class App extends Component {
     const { cards, newGame, onCardClick } = this.props;
     return (
       <Layout>
+        <Menu>
+          <Menu.Item header>Memory Game</Menu.Item>
+          <Menu.Menu position="right">
+            <Button primary onClick={newGame}>New Game</Button>
+          </Menu.Menu>
+        </Menu>
         <Cards>
           {cards.map(({status, id, color}) =>
             <Card
