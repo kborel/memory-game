@@ -1,4 +1,4 @@
-# [Pomodoro Timer](https://kristopherborel.me/memory-game/)
+# [Memory Game](https://kristopherborel.me/memory-game/)
 
 ![](assets/demo.gif)
 
