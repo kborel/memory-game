@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Card from './components/Card';
-import Header from './components/Header';
 import Layout from './components/Layout';
 import Cards from './components/Cards';
 import * as actions from './ducks/cards';
@@ -18,10 +17,6 @@ class App extends Component {
     const { cards, newGame, onCardClick } = this.props;
     return (
       <Layout>
-        <Header>
-          <h1>Memory Game</h1>
-          <a style={{cursor: 'pointer'}}onClick={newGame} >New Game</a>
-        </Header>
         <Cards>
           {cards.map(({status, id, color}) =>
             <Card
